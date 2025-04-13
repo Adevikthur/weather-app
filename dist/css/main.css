@@ -87,4 +87,9 @@ body {
 }
 .details .col img {
   width: 40px;
+}
+.details .humidity,
+.details .wind {
+  font-size: 28px;
+  margin-top: -6px;
 }/*# sourceMappingURL=main.css.map */
