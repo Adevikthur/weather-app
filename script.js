@@ -10,54 +10,76 @@ const weatherIcon = document.querySelector(".weather-icon");
 const weather = document.querySelector(".weather");
 
 async function checkWeather(city) {
-  const response = await fetch(apiUrl + city + `&appId=${apiKey}`);
+  try {
+    const response = await fetch(apiUrl + city + `&appId=${apiKey}`);
 
-  if (response.status == 404) {
-    document.querySelector(".error").style.display = "block";
-    document.querySelector(".weather").style.display = "none";
-  } else {
-    document.querySelector(".error").style.display = "none";
-    document.querySelector(".weather").style.display = "block";
-    let data = await response.json();
+    if (response.status == 404) {
+      document.querySelector(".error").style.display = "block";
+      document.querySelector(".weather").style.display = "none";
+    } else {
+      document.querySelector(".error").style.display = "none";
+      document.querySelector(".weather").style.display = "block";
+      let data = await response.json();
 
-    document.querySelector(".city").innerHTML =
-      data.name 
+      document.querySelector(".city").innerHTML = data.name;
       // + ", " + data.sys.country;
 
-    document.querySelector(".temp").innerHTML =
-      Math.round(data.main.temp) + " °C";
+      document.querySelector(".temp").innerHTML =
+        Math.round(data.main.temp) + " °C";
 
-    document.querySelector(".humidity").innerHTML = data.main.humidity + " %";
+      document.querySelector(".humidity").innerHTML = data.main.humidity + " %";
 
-    document.querySelector(".wind").innerHTML = data.wind.speed + " km/h";
+      document.querySelector(".wind").innerHTML = data.wind.speed + " km/h";
 
-    if (data.weather[0].main == "Clouds") {
-      weatherIcon.src = "images/clouds.png";
-    } else if (data.weather[0].main == "Clear") {
-      weatherIcon.src = "images/clear.png";
-    } else if (data.weather[0].main == "Rain") {
-      weatherIcon.src = "images/rain.png";
-    } else if (data.weather[0].main == "Drizzle") {
-      weatherIcon.src = "images/drizzle.png";
-    } else if (data.weather[0].main == "Mist") {
-      weatherIcon.src = "images/mist.png";
-    } else if (data.weather[0].main == "Snow") {
-      weatherIcon.src = "images/snow.png";
+      // Log weather condition to debug
+      console.log("Weather condition:", data.weather[0].main);
+
+      // Update weather icon based on condition
+      switch (data.weather[0].main) {
+        case "Clouds":
+          weatherIcon.src = "./images/clouds.png";
+          break;
+        case "Clear":
+          weatherIcon.src = "./images/clear.png";
+          break;
+        case "Rain":
+          weatherIcon.src = "./images/rain.png";
+          break;
+        case "Drizzle":
+          weatherIcon.src = "./images/drizzle.png";
+          break;
+        case "Mist":
+        case "Fog":
+        case "Haze":
+          weatherIcon.src = "./images/mist.png";
+          break;
+        case "Snow":
+          weatherIcon.src = "./images/snow.png";
+          break;
+        default:
+          weatherIcon.src = "./images/clear.png";
+      }
+
+      // Force image reload by adding timestamp
+      weatherIcon.src = weatherIcon.src + "?t=" + new Date().getTime();
+
+      document.querySelector(".weather").style.display = "block";
+      document.querySelector(".error").style.display = "none";
     }
-
-    document.querySelector(".weather").classList.add("show");
-    document.querySelector(".weather").style.display = "block";
-    document.querySelector(".error").style.display = "none";
+  } catch (error) {
+    console.error("Error fetching weather data:", error);
   }
 }
 
 searchBtn.addEventListener("click", () => {
-  checkWeather(searchBox.value);
+  if (searchBox.value.trim()) {
+    checkWeather(searchBox.value);
+  }
 });
-//Try with the enter key
+
 searchBox.addEventListener("keypress", function (event) {
-  if (event.key === "Enter") {
+  if (event.key === "Enter" && searchBox.value.trim()) {
     event.preventDefault();
-    searchBtn.click();
+    checkWeather(searchBox.value);
   }
 });
