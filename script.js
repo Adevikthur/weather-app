@@ -1,4 +1,4 @@
-import config from './config.js';
+import config from "./config.js";
 
 const apiKey = config.apiKey;
 const apiUrl =
@@ -20,7 +20,9 @@ async function checkWeather(city) {
     document.querySelector(".weather").style.display = "block";
     let data = await response.json();
 
-    document.querySelector(".city").innerHTML = data.name;
+    document.querySelector(".city").innerHTML =
+      data.name 
+      // + ", " + data.sys.country;
 
     document.querySelector(".temp").innerHTML =
       Math.round(data.main.temp) + " °C";
@@ -59,5 +61,3 @@ searchBox.addEventListener("keypress", function (event) {
     searchBtn.click();
   }
 });
-
-checkWeather(city);

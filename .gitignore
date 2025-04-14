@@ -1,5 +1,5 @@
 # Ignore configuration files with sensitive data
-config.js
+./config.js
 
 # Other common files to ignore
 node_modules/
