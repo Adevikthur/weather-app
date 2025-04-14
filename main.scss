@@ -63,6 +63,10 @@ body {
 }
 
 .weather {
+    display: none;
+    /* Hide the weather section by default */
+
+
     h1 {
         font-size: 44px;
         font-weight: 600;
@@ -74,6 +78,14 @@ body {
         font-weight: 400;
         margin-top: -10px;
     }
+}
+
+.error {
+    text-align: left;
+    margin-left: 10px;
+    font-size: 14px;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+    display: none;
 }
 
 .details {
@@ -100,6 +112,8 @@ body {
     .wind {
         font-size: 28px;
         margin-top: -6px;
-        
+
     }
 }
+
+
